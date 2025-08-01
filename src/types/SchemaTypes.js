@@ -64,7 +64,7 @@ function Vehicle() {
  * @interface
  * @extends Document
  */
-function Driver() {
+function Beekeepers() {
     /**
      * Driver number
      * @type {string}
@@ -149,6 +149,11 @@ function Driver() {
      */
     this.isAvailable = true;
 
+    /**
+     * Admin ID of the driver
+     * @type {string}
+     * */
+    this.adminId = "";
     
         
 }

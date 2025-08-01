@@ -11,7 +11,7 @@ const UserModel = require("../model/user.model");
 
 // Route for user registration
 exports.signup = tryCatch(async (req, res) => {
-    const { username, email, password, company } = req.body;
+    const { adminId, email, password, company } = req.body;
 
     const user = await UserModel.findOne({ email });
     if (user) {
@@ -20,7 +20,7 @@ exports.signup = tryCatch(async (req, res) => {
 
     const hashpassword = await bcrypt.hash(password, 10);
     const newUser = new UserModel({
-        username,
+        adminId,
         company,
         email,
         password: hashpassword,
@@ -34,9 +34,9 @@ exports.signup = tryCatch(async (req, res) => {
 
 
 exports.login = tryCatch(async (req, res) => {
-    const { username, password } = req.body;
+    const { email, password } = req.body;
 
-    const user = await UserModel.findOne({username});
+    const user = await UserModel.findOne({email});
     if (!user) {
         return res.status(400).json({message: "User is not registered"});
     }
@@ -46,7 +46,7 @@ exports.login = tryCatch(async (req, res) => {
         return res.status(400).json({message: "Invalid password"});
     }
     
-    const token = jwt.sign({username: user.username, company: user.company}, process.env.KEY, {
+    const token = jwt.sign({email: user.email, company: user.company}, process.env.KEY, {
         expiresIn: "24h",
     });
     
@@ -60,7 +60,7 @@ exports.login = tryCatch(async (req, res) => {
 
 // Route for user password reset request
 exports.forgotPassword = tryCatch(async (req, res) => {
-    const { email , username  } = req.body;
+    const { email , adminId  } = req.body;
 
     const user = await UserModel.findOne({ email });
     if (!user) {
@@ -68,11 +68,11 @@ exports.forgotPassword = tryCatch(async (req, res) => {
     }
     
     // Check if the username matches
-    if (user.username !== username) {
+    if (user.adminId !== adminId) {
         return res.status(400).json({ message: "Incorrect username or email." });
     }
     
-    const token = jwt.sign({ id: user._id , username: user.username }, process.env.KEY, {
+    const token = jwt.sign({ id: user._id , adminId: user.adminId }, process.env.KEY, {
         expiresIn: "5m",
     });
     
@@ -107,14 +107,14 @@ exports.forgotPassword = tryCatch(async (req, res) => {
 // Route for resetting the password
 exports.resetPassword = tryCatch(async (req, res) => {
     const { token } = req.params;
-    const { password, username } = req.body;
+    const { password, email } = req.body;
 
     try {
         const decoded = jwt.verify(token, process.env.KEY);
         const id = decoded.id;
         const decodedUsername = decoded.username;
 
-        if (username !== decodedUsername) {
+        if (email !== decodedEmail) {
             return res.status(400).json({ message: "User cannot be verified." });
         }
 

@@ -22,6 +22,10 @@ const UserSchema = new Schema({
     type: String,
     required: true,
   },
+  adminId: {
+    type: String,
+    required: true,
+  },
 });
 
 // Creating a model for the User schema
