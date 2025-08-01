@@ -1,12 +1,9 @@
 const { model, Schema } = require("mongoose");
 const CounterModel = require('./counter.model');
 
-
-const driverSchema = new Schema({
-    
+const beekeeperSchema = new Schema({
     no: {
         type: String,
-        //required: false,
         unique: true
     },
     date: {
@@ -46,19 +43,6 @@ const driverSchema = new Schema({
         lowercase: true,
         trim: true
     },
-    /*licenseNo: {
-        type: String,
-        required: true,
-        unique: true
-    },
-    licenseExpireDate: {
-        type: Date,
-        required: true
-    },
-    medicalIssues: {
-        type: String,
-        default: ""
-    },*/
 
     username: {
         type: String,
@@ -75,22 +59,22 @@ const driverSchema = new Schema({
         default: true,
     },
     isActive: {
-    type: Boolean,
-    default: true,
-  },
+        type: Boolean,
+        default: true,
+    },
 }, { timestamps: true });
 
-driverSchema.pre('save', async function (next) {
-    const driver = this;
+beekeeperSchema.pre('save', async function (next) {
+    const beekeeper = this;
     const counter = await CounterModel.findByIdAndUpdate(
-      { _id: 'driverNo' },
+      { _id: 'beekeeperNo' },
       { $inc: { seq: 1 } },
       { new: true, upsert: true }
     );
-    driver.no = `D${counter.seq.toString().padStart(3, '0')}`;
+    beekeeper.no = `B${counter.seq.toString().padStart(3, '0')}`;
     next();
   });
 
-const DriverModel = model("Driver", driverSchema);
+const BeekeeperModel = model("Beekeeper", beekeeperSchema);
 
-module.exports = DriverModel;
+module.exports = BeekeeperModel;

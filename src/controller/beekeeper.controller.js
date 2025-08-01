@@ -1,8 +1,8 @@
 const tryCatch = require("../utils/TryCatch");
 const { Request, Response } = require("express");
 const { StandardResponse } = require("../dto/StandardResponse");
-const { Driver } = require("../types/SchemaTypes");
-const DriverModel = require("../model/driver.model");
+const { Beekeeper } = require("../types/SchemaTypes");
+const BeekeeperModel = require("../model/beekeeper.model");
 const crypto = require('crypto');
 const bcrypt = require('bcrypt');
 const validator = require('validator');
@@ -33,32 +33,32 @@ function generatePassword(length) {
     password = password.split('').sort(() => 0.5 - Math.random()).join('');
     
     return password;
-  }
+}
 
 function generateUsername(name) {
     return name.toLowerCase().replace(/\s/g, '') + Math.floor(Math.random() * 1000);
 }
 
 /**
- * Create a driver
+ * Create a beekeeper
  */
-exports.createDriver = tryCatch(async (req, res) => {
-    const driver = req.body;
+exports.createBeekeeper = tryCatch(async (req, res) => {
+    const beekeeper = req.body;
 
-    console.log(driver);
+    console.log(beekeeper);
 
-    const username = generateUsername(driver.lastName);
+    const username = generateUsername(beekeeper.lastName);
     const password = generatePassword(12);
 
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    driver.username = username;
-    driver.password = hashedPassword;
+    beekeeper.username = username;
+    beekeeper.password = hashedPassword;
 
-    const driverModel = new DriverModel(driver);
-    const savedDriver = await driverModel.save();
+    const beekeeperModel = new BeekeeperModel(beekeeper);
+    const savedBeekeeper = await beekeeperModel.save();
 
-    await sendEmail(driver.email, 'Your Account Details',
+    await sendEmail(beekeeper.email, 'Your Account Details',
          ` Welcome to ROMODO!
 
          Your account has been created successfully.\nUsername: ${username}\nPassword: ${password}
@@ -68,41 +68,40 @@ exports.createDriver = tryCatch(async (req, res) => {
          Best regards,
          ROMODO`);
 
-    const response = { statusCode: 201, msg: "created successfully", data: savedDriver._id };
+    const response = { statusCode: 201, msg: "created successfully", data: savedBeekeeper._id };
     res.status(201).send(response);
 });
 
 /**
- * get all drivers
+ * get all beekeepers
  */
-exports.getAllDrivers = tryCatch(async (req, res) => {
-    const drivers = await DriverModel.find();
-    const response = { statusCode: 200, msg: "OK", data: drivers };
+exports.getAllBeekeepers = tryCatch(async (req, res) => {
+    const beekeepers = await BeekeeperModel.find();
+    const response = { statusCode: 200, msg: "OK", data: beekeepers };
     res.status(200).send(response);
 });
 
 /**
- * get a driver
+ * get a beekeeper
  */
-exports.getDriver = tryCatch(async (req, res) => {
-    const driver = await DriverModel.findOne({ _id: req.params.id });
+exports.getBeekeeper = tryCatch(async (req, res) => {
+    const beekeeper = await BeekeeperModel.findOne({ _id: req.params.id });
 
-    if (!driver) {
-        const errorResponse = { statusCode: 400, msg: `${req.params.id} driver not found!` };
+    if (!beekeeper) {
+        const errorResponse = { statusCode: 404, msg: `${req.params.id} beekeeper not found!` };
         return res.status(404).send(errorResponse);
     }
-    const response = { statusCode: 200, msg: "OK", data: driver };
+    const response = { statusCode: 200, msg: "OK", data: beekeeper };
     res.status(200).send(response);
 });
 
 /**
- * update a driver
+ * update a beekeeper
  */
-exports.updateDriver = tryCatch(async (req, res) => {
-    const driverId = req.params.id;
+exports.updateBeekeeper = tryCatch(async (req, res) => {
+    const beekeeperId = req.params.id;
     console.log(req.body);
     const updateFields = {};
-    const originalFields = {};
 
     if (req.body.email) {
         if (!validator.isEmail(req.body.email)) {
@@ -133,18 +132,18 @@ exports.updateDriver = tryCatch(async (req, res) => {
     if (req.body.isActive !== undefined) updateFields.isActive = req.body.isActive;
     
     try {
-        const driver = await DriverModel.findOneAndUpdate(
-            { _id: driverId },
+        const beekeeper = await BeekeeperModel.findOneAndUpdate(
+            { _id: beekeeperId },
             { $set: updateFields },
             { new: true, runValidators: true }
         );
 
-        if (!driver) {
-            return res.status(404).json({ error: 'Driver not found' });
+        if (!beekeeper) {
+            return res.status(404).json({ error: 'Beekeeper not found' });
         }
 
         // Send email with the updated data
-        await sendEmail(driver.email || updateFields.email, 
+        await sendEmail(beekeeper.email || updateFields.email, 
             'Your Information Has Been Updated', 
             `Your information has been updated with the following details:\n${JSON.stringify(updateFields, null, 2)}
             
@@ -153,29 +152,27 @@ exports.updateDriver = tryCatch(async (req, res) => {
             Best regards,
             ROMODO`);
 
-        return res.status(200).json({ status: true, message: 'Driver updated successfully', data: driver });
+        return res.status(200).json({ status: true, message: 'Beekeeper updated successfully', data: beekeeper });
     } catch (err) {
         return res.status(500).json({ error: 'Server error' });
     }
 });
 
-
-
 /**
- * delete a driver
+ * delete a beekeeper
  */
-exports.deleteDriver = tryCatch(async (req, res) => {
+exports.deleteBeekeeper = tryCatch(async (req, res) => {
     console.log(req.params);
 
-    const driver = await DriverModel.findOne({ _id: req.params.id });
-    if (!driver) {
-        const errorResponse = { statusCode: 404, msg: `${req.params.id} driver not found!` };
+    const beekeeper = await BeekeeperModel.findOne({ _id: req.params.id });
+    if (!beekeeper) {
+        const errorResponse = { statusCode: 404, msg: `${req.params.id} beekeeper not found!` };
         return res.status(404).send(errorResponse);
     }
-    await DriverModel.findByIdAndDelete({ _id: req.params.id });
+    await BeekeeperModel.findByIdAndDelete({ _id: req.params.id });
 
-    // Send email to the driver notifying about the deletion
-    await sendEmail(driver.email, 'Account Deletion', 
+    // Send email to the beekeeper notifying about the deletion
+    await sendEmail(beekeeper.email, 'Account Deletion', 
         `Your account has been deleted from our system. 
     
     If you believe this is a mistake, please contact support.
@@ -187,28 +184,28 @@ exports.deleteDriver = tryCatch(async (req, res) => {
 });
 
 /**
- * toggle driver active status
+ * toggle beekeeper active status
  */
-exports.toggleDriverStatus = tryCatch(async (req, res) => {
-    const driverId = req.params.id;
-    const driver = await DriverModel.findOne({ _id: driverId });
+exports.toggleBeekeeperStatus = tryCatch(async (req, res) => {
+    const beekeeperId = req.params.id;
+    const beekeeper = await BeekeeperModel.findOne({ _id: beekeeperId });
 
-    if (!driver) {
-        return res.status(404).json({ error: 'Driver not found' });
+    if (!beekeeper) {
+        return res.status(404).json({ error: 'Beekeeper not found' });
     }
 
-    driver.isActive = !driver.isActive;
+    beekeeper.isActive = !beekeeper.isActive;
 
-    const updatedDriver = await driver.save();
+    const updatedBeekeeper = await beekeeper.save();
 
-    // Send email to notify the driver about the status change
-    await sendEmail(driver.email, 'Account Status Change',
-         `Your account status has been changed to ${driver.isActive ? 'Active' : 'Inactive'}.
+    // Send email to notify the beekeeper about the status change
+    await sendEmail(beekeeper.email, 'Account Status Change',
+         `Your account status has been changed to ${beekeeper.isActive ? 'Active' : 'Inactive'}.
          
          If you have any questions, please contact support.
          
          Best regards,
          ROMODO`);
 
-    res.status(200).json({ status: true, message: `Driver ${driver.isActive ? 'activated' : 'deactivated'} successfully`, data: updatedDriver });
+    res.status(200).json({ status: true, message: `Beekeeper ${beekeeper.isActive ? 'activated' : 'deactivated'} successfully`, data: updatedBeekeeper });
 });
