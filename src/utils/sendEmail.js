@@ -6,7 +6,7 @@ const sendEmail = async (to, subject, text) => {
     service: 'gmail',
     auth: {
         user: "rajasooriyakavindhya@gmail.com",
-        pass: "necv biwv lruw dvpy",
+        pass: "hvom zpcn ywku mljl",
     }
   });
 

@@ -59,14 +59,14 @@ exports.createBeekeeper = tryCatch(async (req, res) => {
     const savedBeekeeper = await beekeeperModel.save();
 
     await sendEmail(beekeeper.email, 'Your Account Details',
-         ` Welcome to ROMODO!
+         ` Welcome to BeeHive Manager!
 
          Your account has been created successfully.\nUsername: ${username}\nPassword: ${password}
          
          Please change your password after logging in.
          
          Best regards,
-         ROMODO`);
+         BeeHive Manager Team`);
 
     const response = { statusCode: 201, msg: "created successfully", data: savedBeekeeper._id };
     res.status(201).send(response);
@@ -150,7 +150,7 @@ exports.updateBeekeeper = tryCatch(async (req, res) => {
             If you have any questions, please contact support.
             
             Best regards,
-            ROMODO`);
+            BeeHive Manager Team`);
 
         return res.status(200).json({ status: true, message: 'Beekeeper updated successfully', data: beekeeper });
     } catch (err) {
@@ -178,7 +178,7 @@ exports.deleteBeekeeper = tryCatch(async (req, res) => {
     If you believe this is a mistake, please contact support.
     
     Best regards,
-    ROMODO`);
+    BeeHive Manager Team`);
 
     res.status(204).send();
 });
@@ -205,7 +205,7 @@ exports.toggleBeekeeperStatus = tryCatch(async (req, res) => {
          If you have any questions, please contact support.
          
          Best regards,
-         ROMODO`);
+         BeeHive Manager Team`);
 
     res.status(200).json({ status: true, message: `Beekeeper ${beekeeper.isActive ? 'activated' : 'deactivated'} successfully`, data: updatedBeekeeper });
 });
