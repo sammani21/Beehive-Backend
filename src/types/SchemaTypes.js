@@ -3,60 +3,66 @@
  * @interface
  * @extends Document
  */
-function Vehicle() {
+function Hive() {
     /**
-     * Vehicle number
+     * Hive number
      * @type {string}
      */
     this.no = "";
 
     /**
-     * Vehicle type
+     * Hive type
      * @type {string}
      */
     this.type = "";
 
     /**
-     * Chassis number
+     * Hive location
      * @type {string}
      */
-    this.chassisNo = "";
+    this.location = "";
 
     /**
-     * Production year
+     * Established year
      * @type {Date}
      */
-    this.productionYear = new Date();
+    this.establishedYear = new Date();
 
     /**
-     * Whether the vehicle has AC
+     * Whether the hive is active
      * @type {boolean}
      */
-    this.ac = false;
+    this.status = false;
 
     /**
-     * Vehicle brand
+     * Queen bee breed
      * @type {string}
      */
-    this.brand = "";
+    this.queenBreed = "";
 
     /**
-     * Availability of the vehicle
+     * Availability of the hive
      * @type {boolean}
      */
     this.availability = true;
 
     /**
-     * Fuel type of the vehicle
+     * Products of the hive
      * @type {string}
      */
-    this.fuelType = "";
+    this.products = "";
 
     /**
-     * Number of seats in the vehicle
+     * Population of the hive
      * @type {number}
      */
-    this.noOfSeats = 0;
+    this.population = 0;
+
+    /**
+     * Unique identifier for the hive
+     * @type {string}
+     */
+    this.id = "";
 }
 
 /**
@@ -284,7 +290,7 @@ function Passenger() {
 
 
 module.exports = {
-    Vehicle: Vehicle,
+    Hive: Hive,
     Beekeepers: Beekeepers,
     User: User,
     Passenger: Passenger

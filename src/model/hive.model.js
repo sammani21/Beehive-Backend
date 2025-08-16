@@ -1,10 +1,9 @@
 const { model, Schema } = require("mongoose");
 const CounterModel = require('./counter.model');
 
-const vehicleSchema = new Schema({
-    id : {
+const hiveSchema = new Schema({
+    id: {
         type: String,
-       
         unique: true
     },
     no: {
@@ -16,20 +15,20 @@ const vehicleSchema = new Schema({
         type: String,
         required: true
     },
-    chassisNo: {
+    location: {
         type: String,
         required: true,
         unique: true
     },
-    productionYear: {
+    establishedYear: {
         type: Date,
         required: true
     },
-    ac: {
+    status: {
         type: Boolean,
         default: false
     },
-    brand: {
+    queenBreed: {
         type: String,
         required: true
     },
@@ -37,28 +36,28 @@ const vehicleSchema = new Schema({
         type: Boolean,
         default: true
     },
-    fuelType: {
+    products: {
         type: String,
         required: true
     },
-    noOfSeats: {
+    population: {
         type: Number,
         required: true
     }
 }, { timestamps: true });
 
-vehicleSchema.pre('save', async function (next) {
+hiveSchema.pre('save', async function (next) {
     if (this.isNew) {
         const counter = await CounterModel.findByIdAndUpdate(
-            { _id: 'vehicleId' },
+            { _id: 'hiveId' },
             { $inc: { seq: 1 } },
             { new: true, upsert: true }
         );
-        this.id = `V${counter.seq.toString().padStart(3, '0')}`;
+        this.id = `H${counter.seq.toString().padStart(3, '0')}`;
     }
     next();
 });
 
-const VehicleModel = model("Vehicle", vehicleSchema);
+const HiveModel = model("Hive", hiveSchema);
 
-module.exports = VehicleModel;
+module.exports = HiveModel;
