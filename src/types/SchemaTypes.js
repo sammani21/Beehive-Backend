@@ -60,7 +60,7 @@ function Vehicle() {
 }
 
 /**
- * Driver interface
+ * Beekeepers interface
  * @interface
  * @extends Document
  */
@@ -285,7 +285,7 @@ function Passenger() {
 
 module.exports = {
     Vehicle: Vehicle,
-    Driver: Driver,
+    Beekeepers: Beekeepers,
     User: User,
     Passenger: Passenger
 
