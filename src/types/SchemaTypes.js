@@ -171,16 +171,16 @@ function Beekeepers() {
  */
 function User() {
     /**
-     * Username
+     * Fullname
      * @type {string}
      */
-    this.username = "";
+    this.fullname = "";
 
     /**
-     * Company name
+     * admin ID 
      * @type {string}
      */
-    this.company = "";
+    this.adminId = "";
 
     /**
      * Email

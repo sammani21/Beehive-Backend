@@ -102,6 +102,7 @@ exports.updateBeekeeper = tryCatch(async (req, res) => {
     const beekeeperId = req.params.id;
     console.log(req.body);
     const updateFields = {};
+    const originalFields = {};
 
     if (req.body.email) {
         if (!validator.isEmail(req.body.email)) {

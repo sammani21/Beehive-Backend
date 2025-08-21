@@ -5,7 +5,7 @@ const { model , Schema  } = require("mongoose");
 // Defining the schema for the User model
 const UserSchema = new Schema({
   
-  company: {
+  fullname: {
     type: String,
     required: true,
   },

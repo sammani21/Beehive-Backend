@@ -11,7 +11,7 @@ const UserModel = require("../model/user.model");
 
 // Route for user registration
 exports.signup = tryCatch(async (req, res) => {
-    const { adminId, email, password, company } = req.body;
+    const { adminId, email, password, fullname } = req.body;
 
     const user = await UserModel.findOne({ email });
     if (user) {
@@ -21,7 +21,7 @@ exports.signup = tryCatch(async (req, res) => {
     const hashpassword = await bcrypt.hash(password, 10);
     const newUser = new UserModel({
         adminId,
-        company,
+        fullname,
         email,
         password: hashpassword,
     });
@@ -46,7 +46,7 @@ exports.login = tryCatch(async (req, res) => {
         return res.status(400).json({message: "Invalid password"});
     }
     
-    const token = jwt.sign({email: user.email, company: user.company}, process.env.KEY, {
+    const token = jwt.sign({email: user.email, adminId: user.adminId}, process.env.KEY, {
         expiresIn: "24h",
     });
     

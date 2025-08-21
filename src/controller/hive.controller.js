@@ -1,5 +1,6 @@
 const tryCatch = require("../utils/TryCatch");
 const { Request, Response } = require("express");
+const { StandardResponse } = require("../dto/StandardResponse");
 const HiveModel = require("../model/hive.model");
 const { Hive } = require("../types/SchemaTypes");
 
@@ -8,7 +9,8 @@ const { Hive } = require("../types/SchemaTypes");
  */
 exports.getAllHives = tryCatch(async (req, res) => {
     const hives = await HiveModel.find();
-    res.status(200).json(hives);
+    const response = { statusCode: 200, msg: "OK", data: hives }; 
+    res.status(200).json(response);
 });
 
 /**
@@ -17,9 +19,10 @@ exports.getAllHives = tryCatch(async (req, res) => {
 exports.getHive = tryCatch(async (req, res) => {
     const hive = await HiveModel.findOne({ id: req.params.id });
     if (!hive) {
-        return res.status(404).json({ error: `${req.params.id} hive not found` });
+        const errorResponse = { statusCode: 400, msg: `${req.params.id} vehicle not found!` };
+        return res.status(404).send(errorResponse);
     }
-    res.status(200).json(hive);
+    const response = { statusCode: 200, msg: "OK", data: hive };
+    res.status(200).send(response);
 });
 
-module.exports = { getAllHives, getHive };
