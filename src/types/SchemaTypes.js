@@ -200,8 +200,6 @@ Passenger interface
 @interface
 @extends Document
 */
-
-
 function Passenger() {
     /**
     * Passenger's email
@@ -282,17 +280,118 @@ function Passenger() {
           * @type {boolean}
           */
             this.isActive = true;
-
-
-
 }
 
+/**
+ * Product interface
+ * @interface
+ * @extends Document
+ */
+function Product() {
+    /**
+     * Reference to the beekeeper
+     * @type {string}
+     */
+    this.beekeeper = "";
 
+    /**
+     * Name of the product
+     * @type {string}
+     */
+    this.productName = "";
+
+    /**
+     * Type of the product
+     * @type {string}
+     * @enum {["Honey", "Beeswax", "Propolis", "Royal Jelly", "Bee Pollen", "Other"]}
+     */
+    this.productType = "";
+
+    /**
+     * Optional details about product
+     * @type {string}
+     */
+    this.description = "";
+
+    /**
+     * Numeric quantity
+     * @type {number}
+     */
+    this.quantity = 0;
+
+    /**
+     * Unit of measurement
+     * @type {string}
+     * @enum {["kg", "g", "liters", "ml", "pieces"]}
+     */
+    this.unit = "kg";
+
+    /**
+     * Per unit price
+     * @type {number}
+     */
+    this.price = 0;
+
+    /**
+     * When harvested
+     * @type {Date}
+     */
+    this.harvestDate = new Date();
+
+    /**
+     * Optional expiry date if perishable
+     * @type {Date}
+     */
+    this.expiryDate = new Date();
+
+    /**
+     * Quality grade of the product
+     * @type {string}
+     * @enum {["Premium", "Standard", "Organic", "Unspecified"]}
+     */
+    this.qualityGrade = "Unspecified";
+
+    /**
+     * Location of harvest
+     * @type {string}
+     */
+    this.originLocation = "";
+
+    /**
+     * Percentage moisture (for honey)
+     * @type {number}
+     */
+    this.moistureContent = 0;
+
+    /**
+     * Color of the wax (for beeswax)
+     * @type {string}
+     */
+    this.waxColor = "";
+
+    /**
+     * Source of pollen
+     * @type {string}
+     */
+    this.pollenSource = "";
+
+    /**
+     * Creation timestamp
+     * @type {Date}
+     */
+    this.createdAt = new Date();
+
+    /**
+     * Last update timestamp
+     * @type {Date}
+     */
+    this.updatedAt = new Date();
+}
 
 module.exports = {
     Hive: Hive,
     Beekeepers: Beekeepers,
     User: User,
-    Passenger: Passenger
-
+    Passenger: Passenger,
+    Product: Product
 };

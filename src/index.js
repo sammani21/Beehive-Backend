@@ -2,22 +2,16 @@ const express = require("express");
 const mongoose = require("mongoose");
 const env = require("dotenv");
 const errorHandler = require("./middlewares/ErrorHandler");
-const cors = require('cors');
+const cors = require("cors");
 const hiveRoute = require("./routes/hive.route");
 const beekeeperRoute = require("./routes/beekeeper.route");
 const userRoute = require("./routes/user.route");
-const passengerRoute = require("./routes/passenger.route");
-const cookieParser = require('cookie-parser');
+const cookieParser = require("cookie-parser");
 const hiveRoutes = require("./routes/hiveDashboardRoutes");
 const beekeeperRoutes = require("./routes/beekeeperDashboardRoutes");
-const tripRoutes = require("./routes/tripDashboardRoutes");
-const issueRoutes = require("./routes/issueDashboardRoutes");
-const countCompletedTripsRoute = require('./routes/countCompletedTripsRoute');
-const passengerRouteReport = require("./routes/passengerReportRoutes");
-const beekeeperRouteReport = require('./routes/beekeeperReportRoutes');
-const hiveRouteReport = require('./routes/hiveReportRoutes');
-const issueRouteReport = require('./routes/issueReportRoutes');
-
+const beekeeperRouteReport = require("./routes/beekeeperReportRoutes");
+const hiveRouteReport = require("./routes/hiveReportRoutes");
+const productRoutes = require("./routes/product.route");
 env.config();
 
 mongoose
@@ -33,19 +27,16 @@ app.use(cookieParser());
 app.use("/api/v1/hive", hiveRoute);
 app.use("/api/v1/beekeeper", beekeeperRoute);
 app.use("/api/v1/user", userRoute);
-app.use("/api/v1/passenger", passengerRoute);
 app.use("/api/hives", hiveRoutes);
 app.use("/api/beekeepers", beekeeperRoutes);
-app.use("/api/trips", tripRoutes);
-app.use("/api/issues", issueRoutes);
-app.use("/api/trips", countCompletedTripsRoute);
-app.use('/api/passengers', passengerRouteReport);
-app.use('/api/beekeepers', beekeeperRouteReport);
-app.use('/api/hives', hiveRouteReport);
-app.use('/api/issues', issueRouteReport);
+app.use("/api/beekeepers", beekeeperRouteReport);
+app.use("/api/hives", hiveRouteReport);
+app.use("/api/v1/products", productRoutes);
 
 app.use(errorHandler);
 
 app.listen(process.env.PORT, () => {
-  console.log(`[server]: Server is running at http://localhost:${process.env.PORT}`);
+  console.log(
+    `[server]: Server is running at http://localhost:${process.env.PORT}`
+  );
 });

@@ -1,5 +1,5 @@
 const { model, Schema } = require("mongoose");
-const CounterModel = require('./counter.model');
+//const CounterModel = require('./counter.model');
 
 const hiveSchema = new Schema({
 no: { // updated from `no` for clarity

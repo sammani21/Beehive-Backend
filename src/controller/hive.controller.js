@@ -1,8 +1,6 @@
 const tryCatch = require("../utils/TryCatch");
-const { Request, Response } = require("express");
-const { StandardResponse } = require("../dto/StandardResponse");
+const StandardResponse = require("../dto/StandardResponse");
 const HiveModel = require("../model/hive.model");
-const { Hive } = require("../types/SchemaTypes");
 
 /**
  * Get all hives
@@ -36,9 +34,11 @@ exports.updateHiveStatus = tryCatch(async (req, res) => {
     // Validate status
     const validStatuses = ['Active', 'Inactive', 'Maintenance', 'Quarantined'];
     if (!validStatuses.includes(status)) {
-        return res.status(400).json(
-            new StandardResponse(400, `Invalid status. Must be one of: ${validStatuses.join(', ')}`)
-        );
+        const errorResponse = { 
+            statusCode: 400, 
+            msg: `Invalid status. Must be one of: ${validStatuses.join(', ')}` 
+        };
+        return res.status(400).json(errorResponse);
     }
     
     const hive = await HiveModel.findOneAndUpdate(
@@ -48,13 +48,10 @@ exports.updateHiveStatus = tryCatch(async (req, res) => {
     );
     
     if (!hive) {
-        return res.status(404).json(
-            new StandardResponse(404, `Hive with ID ${id} not found`)
-        );
+        const errorResponse = { statusCode: 404, msg: `Hive with ID ${id} not found` };
+        return res.status(404).json(errorResponse);
     }
     
-    res.status(200).json(
-        new StandardResponse(200, "Hive status updated successfully", hive)
-    );
+    const response = { statusCode: 200, msg: "Hive status updated successfully", data: hive };
+    res.status(200).json(response);
 });
-
