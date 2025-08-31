@@ -26,5 +26,35 @@ exports.getHive = tryCatch(async (req, res) => {
     res.status(200).send(response);
 });
 
-
+/**
+ * Update hive status (Admin only)
+ */
+exports.updateHiveStatus = tryCatch(async (req, res) => {
+    const { id } = req.params;
+    const { status } = req.body;
+    
+    // Validate status
+    const validStatuses = ['Active', 'Inactive', 'Maintenance', 'Quarantined'];
+    if (!validStatuses.includes(status)) {
+        return res.status(400).json(
+            new StandardResponse(400, `Invalid status. Must be one of: ${validStatuses.join(', ')}`)
+        );
+    }
+    
+    const hive = await HiveModel.findOneAndUpdate(
+        { id: id },
+        { status: status },
+        { new: true, runValidators: true }
+    );
+    
+    if (!hive) {
+        return res.status(404).json(
+            new StandardResponse(404, `Hive with ID ${id} not found`)
+        );
+    }
+    
+    res.status(200).json(
+        new StandardResponse(200, "Hive status updated successfully", hive)
+    );
+});
 

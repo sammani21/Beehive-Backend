@@ -51,6 +51,11 @@ no: { // updated from `no` for clarity
         type: String,
         unique: true
     },
+    status: {
+    type: String,
+    enum: ['Active', 'Inactive', 'Maintenance', 'Quarantined'],
+    default: 'Active'
+  }
     /*no: {
         type: String,
         required: true,
