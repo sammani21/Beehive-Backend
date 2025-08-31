@@ -2,16 +2,61 @@ const { model, Schema } = require("mongoose");
 const CounterModel = require('./counter.model');
 
 const hiveSchema = new Schema({
+no: { // updated from `no` for clarity
+    type: Schema.Types.ObjectId,
+    ref: 'Beekeeper',
+    required: true
+  },
+  hiveName: { type: String, required: true },
+  hiveType: { type: String, required: true },
+  establishedYear: { type: Date, required: true },
+  /*lastInspection: { type: Date, required: true },*/
+  strength: { 
+    type: Number, 
+    min: 1, 
+    max: 10,
+    required: true
+  },
+  queenStatus: { 
+    type: String, 
+    enum: ['Present', 'Not Present', 'Unknown'],
+    required: true
+  },
+  broodPattern: { 
+    type: String, 
+    enum: ['Solid', 'Spotty', 'None', 'Other'],
+    required: true
+  },
+
+  honeyStores: { 
+    type: Number, 
+    min: 0, 
+    max: 100,
+    required: true
+  },
+  pestLevel: { 
+    type: Number, 
+    min: 0, 
+    max: 10,
+    required: true
+  },
+  diseaseSigns: { 
+    type: [String], 
+    default: [] 
+  },
+  location: { type: String, required: true },
+  population: { type: Number, min: 0, required: true },
+
     id: {
         type: String,
         unique: true
     },
-    no: {
+    /*no: {
         type: String,
         required: true,
         unique: true
-    },
-    type: {
+    },*/
+    /*type: {
         type: String,
         required: true
     },
@@ -19,12 +64,12 @@ const hiveSchema = new Schema({
         type: String,
         required: true,
         unique: true
-    },
-    establishedYear: {
+    },*/
+    /*establishedYear: {
         type: Date,
         required: true
-    },
-    status: {
+    },*/
+    /*status: {
         type: Boolean,
         default: false
     },
@@ -43,20 +88,10 @@ const hiveSchema = new Schema({
     population: {
         type: Number,
         required: true
-    }
+    }*/
 }, { timestamps: true });
 
-hiveSchema.pre('save', async function (next) {
-    if (this.isNew) {
-        const counter = await CounterModel.findByIdAndUpdate(
-            { _id: 'hiveId' },
-            { $inc: { seq: 1 } },
-            { new: true, upsert: true }
-        );
-        this.id = `H${counter.seq.toString().padStart(3, '0')}`;
-    }
-    next();
-});
+
 
 const HiveModel = model("Hive", hiveSchema);
 

@@ -14,7 +14,7 @@ function Hive() {
      * Hive type
      * @type {string}
      */
-    this.type = "";
+    this.hiveType = "";
 
     /**
      * Hive location
@@ -38,7 +38,7 @@ function Hive() {
      * Queen bee breed
      * @type {string}
      */
-    this.queenBreed = "";
+    this.queenStatus = "";
 
     /**
      * Availability of the hive
