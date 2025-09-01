@@ -8,7 +8,7 @@ function Hive() {
      * Hive number
      * @type {string}
      */
-    this.no = "";
+    this.beekeeper = "";
 
     /**
      * Hive type
@@ -288,8 +288,8 @@ function Passenger() {
  * @extends Document
  */
 function Product() {
-    /**
-     * Reference to the beekeeper
+   /**
+     * Hive number
      * @type {string}
      */
     this.beekeeper = "";

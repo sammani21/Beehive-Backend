@@ -2,9 +2,8 @@ const { model, Schema } = require("mongoose");
 //const CounterModel = require('./counter.model');
 
 const hiveSchema = new Schema({
-no: { // updated from `no` for clarity
-    type: Schema.Types.ObjectId,
-    ref: 'Beekeeper',
+beekeeper: { 
+    type: String,  // Changed from Schema.Types.String
     required: true
   },
   hiveName: { type: String, required: true },

@@ -1,9 +1,8 @@
 const { model, Schema } = require("mongoose");
 
 const productSchema = new Schema({
-  beekeeper: { // updated from `no` for clarity
-    type: Schema.Types.ObjectId,
-    ref: 'Beekeeper',
+  beekeeper: { 
+    type: String,  // Changed from Schema.Types.String
     required: true
   },
 
@@ -52,8 +51,8 @@ const productSchema = new Schema({
   // Approval system fields
   status: {
     type: String,
-    enum: ["pending", "approved", "rejected"],
-    default: "pending"
+    enum: ["approved", "rejected"],
+    default: "approved"
   },
   
   rejectionReason: {

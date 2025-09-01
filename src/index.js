@@ -12,6 +12,8 @@ const beekeeperRoutes = require("./routes/beekeeperDashboardRoutes");
 const beekeeperRouteReport = require("./routes/beekeeperReportRoutes");
 const hiveRouteReport = require("./routes/hiveReportRoutes");
 const productRoutes = require("./routes/product.route");
+const recommendationRoutes = require("./routes/recommendations.route");
+
 env.config();
 
 mongoose
@@ -32,6 +34,7 @@ app.use("/api/beekeepers", beekeeperRoutes);
 app.use("/api/beekeepers", beekeeperRouteReport);
 app.use("/api/hives", hiveRouteReport);
 app.use("/api/v1/products", productRoutes);
+app.use("/api/v1/recommendation", recommendationRoutes);
 
 app.use(errorHandler);
 

@@ -1,6 +1,6 @@
 const tryCatch = require("../utils/TryCatch");
 const { Request, Response } = require("express");
-const { StandardResponse } = require("../dto/StandardResponse");
+const StandardResponse = require("../dto/StandardResponse");
 const { Beekeeper } = require("../types/SchemaTypes");
 const BeekeeperModel = require("../model/beekeeper.model");
 const crypto = require('crypto');
