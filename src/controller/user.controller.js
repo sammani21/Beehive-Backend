@@ -60,7 +60,7 @@ exports.login = tryCatch(async (req, res) => {
 
 // Route for user password reset request
 exports.forgotPassword = tryCatch(async (req, res) => {
-    const { email , adminId  } = req.body;
+    const { email , adminId } = req.body;
 
     const user = await UserModel.findOne({ email });
     if (!user) {
@@ -72,7 +72,7 @@ exports.forgotPassword = tryCatch(async (req, res) => {
         return res.status(400).json({ message: "Incorrect username or email." });
     }
     
-    const token = jwt.sign({ id: user._id , adminId: user.adminId }, process.env.KEY, {
+    const token = jwt.sign({email: user.email, adminId: user.adminId }, process.env.KEY, {
         expiresIn: "5m",
     });
     
