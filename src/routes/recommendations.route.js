@@ -1,20 +1,10 @@
-const { Router } = require("express");
-const {
-  getAllRecommendations,
-  getRecommendationsByBeekeeper,
-  getHivesByBeekeeper,
-  createRecommendation,
-  updateRecommendationStatus,
-  deleteRecommendation
-} = require("../controller/recommendation.controller");
+const express = require("express");
+const router = express.Router();
+const recommendationController = require("../controller/recommendation.controller");
 
-const router = Router();
-
-router.get("/", getAllRecommendations);
-router.get("/byBeekeeper/:beekeeperId", getRecommendationsByBeekeeper);
-router.get("/hives/:beekeeperId", getHivesByBeekeeper);
-router.post("/", createRecommendation);
-router.patch("/:id/status", updateRecommendationStatus);
-router.delete("/:id", deleteRecommendation);
+// Routes
+router.get("/", recommendationController.getAllRecommendations);
+router.get("/beekeeper/:beekeeperId", recommendationController.getRecommendationsByBeekeeper);
+router.delete("/:id", recommendationController.deleteRecommendation);
 
 module.exports = router;

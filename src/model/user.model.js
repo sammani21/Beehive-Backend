@@ -1,8 +1,6 @@
-// Importing mongoose module for MongoDB object modeling
-//import mongoose from "mongoose";
+
 const { model , Schema  } = require("mongoose");
 
-// Defining the schema for the User model
 const UserSchema = new Schema({
   
   fullname: {
@@ -24,9 +22,6 @@ const UserSchema = new Schema({
   },
 });
 
-// Creating a model for the User schema
 const UserModel = model("User", UserSchema);
 
-// Exporting the User model
-//export { UserModel as User}
 module.exports = UserModel;
