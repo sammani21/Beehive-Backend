@@ -7,6 +7,7 @@ const crypto = require("crypto");
 const bcrypt = require("bcrypt");
 const validator = require("validator");
 const sendEmail = require("../utils/sendEmail");
+const getNextSequence = require("../utils/getNextSequence");
 
 function generatePassword(length) {
   const uppercase = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
@@ -59,6 +60,8 @@ exports.createBeekeeper = tryCatch(async (req, res) => {
 
   beekeeper.username = username;
   beekeeper.password = hashedPassword;
+
+  beekeeper.no = await getNextSequence("beekeeperId");
 
   const beekeeperModel = new BeekeeperModel(beekeeper);
   const savedBeekeeper = await beekeeperModel.save();
